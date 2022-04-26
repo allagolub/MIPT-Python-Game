@@ -11,6 +11,6 @@ upper_margin = block_size * 4
 down_margin = upper_margin + block_size * 10
 size = (right_margin + block_size * 5, down_margin + 4 * block_size)
 screen = pygame.display.set_mode(size)
-font_size = int(block_size )
+font_size = int(block_size)
 font = pygame.font.SysFont('freesansbold.ttf', font_size)
 LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']

@@ -15,10 +15,11 @@ hit_blocks_for_computer_not_to_shoot = set()
 hit_blocks = set()
 dotted_set = set()
 
-field_ship_first = [[0] * 100 for i in range(1,100)]
-field_ship_second = [[0] * 100 for i in range(1,100)]
+field_ship_first = [[0] * 100 for i in range(1, 100)]
+field_ship_second = [[0] * 100 for i in range(1, 100)]
 count = 0
 length_of_remaining_ships = [0] * 26
+
 
 class DrawingShip:
     def __init__(self, color):
@@ -31,8 +32,12 @@ class DrawingShip:
                     near_ship_set.add((block[0] + i, block[1] + j))
         return near_ship_set
 
-    def draw_ship_with_rules_first(self, human_ships_to_draw_first, num_ships_list, human_ships_to_draw, human_ships_set, count, final_mes,
-                                   ship_not_created, drawing, length_of_remaining_ships, field_ship_first):
+    def draw_ship_with_rules_first(self, human_ships_to_draw_first,
+                                   num_ships_list, human_ships_to_draw,
+                                   human_ships_set, count, final_mes,
+                                   ship_not_created, drawing,
+                                   length_of_remaining_ships,
+                                   field_ship_first):
         flag = True
         start = (0, 0)
         ship_size = (0, 0)
@@ -66,15 +71,14 @@ class DrawingShip:
                         abs((y_start - upper_margin) // block_size + 1 - (
                                     (y_end - upper_margin) // block_size + 1)),
                         abs((x_start - left_margin) // block_size + 1 - (
-                                    (x_end - left_margin) // block_size + 1))) + 1
+                                    (x_end - left_margin) //
+                                    block_size + 1))) + 1
                     if start_block > end_block:
                         start_block, end_block = end_block, start_block
                     temp_ship = []
-                    wrong = 15 < start_block[0] < 26 and 0 < start_block[1] < 11 and 15 < end_block[
-                        0] < 26 and 0 < end_block[1] < 11
+                    wrong = 15 < start_block[0] < 26 and 0 < start_block[1] < 11 and 15 < end_block[0] < 26 and 0 < end_block[1] < 11
                     screen.fill(BLACK)
                     if wrong:
-
                         screen.fill(BLACK)
                         if start_block[0] == end_block[0] and (end_block[1] - start_block[1]) < 4:
                             for block in range(start_block[1], end_block[1] + 1):
@@ -83,21 +87,23 @@ class DrawingShip:
                             for block in range(start_block[0], end_block[0] + 1):
                                 temp_ship.append((block, start_block[1]))
                     if temp_ship:
-                        for i in temp_ship:
-                            human_ships_to_draw_first.add(i)
                         temp_ship_set = set(temp_ship)
                         if (not (temp_ship_set.intersection(near_ship_set))):
                             if (5 - max_len) > num_ships_list[max_len - 1]:
+                                if temp_ship:
+                                    for i in temp_ship:
+                                        human_ships_to_draw_first.add(i)
                                 num_ships_list[max_len - 1] += 1
                                 human_ships_to_draw.append(temp_ship)
                                 human_ships_set |= temp_ship_set
-                                near_ship_set = self.near_safe(temp_ship, near_ship_set)
-                                field_count(start_block, end_block, field_ship_first, count)
+                                near_ship_set = self.near_safe(temp_ship,
+                                                               near_ship_set)
+                                field_count(start_block, end_block,
+                                            field_ship_first, count)
                                 length_of_remaining_ships[count] = max_len
                                 count += 1
                             else:
                                 flag = False
-
                 if len(human_ships_to_draw) == 10:
                     ship_not_created = False
             if (flag):
@@ -114,8 +120,12 @@ class DrawingShip:
         second_grid = Field("First", 15 * block_size)
         pygame.display.update()
 
-    def draw_ship_with_rules_second(self,human_ships_to_draw_second,num_ships_list, human_ships_to_draw,
-                                    human_ships_set, count, final_mes, ship_not_created, drawing, length_of_remaining_ships, field_ship_second):
+    def draw_ship_with_rules_second(self, human_ships_to_draw_second,
+                                    num_ships_list, human_ships_to_draw,
+                                    human_ships_set, count, final_mes,
+                                    ship_not_created, drawing,
+                                    length_of_remaining_ships,
+                                    field_ship_second):
         flag = True
         start = (0, 0)
         ship_size = (0, 0)
@@ -146,7 +156,8 @@ class DrawingShip:
                                  (y_end - upper_margin) // block_size + 1)
 
                     max_len = max(
-                        abs((y_start - upper_margin) // block_size + 1 - ((y_end - upper_margin) // block_size + 1)),
+                        abs((y_start - upper_margin) // block_size + 1 -
+                           ((y_end - upper_margin) // block_size + 1)),
                         abs((x_start - left_margin) // block_size + 1 - ((x_end - left_margin) // block_size + 1))) + 1
                     if start_block > end_block:
                         start_block, end_block = end_block, start_block
@@ -159,19 +170,22 @@ class DrawingShip:
                             for block in range(start_block[1], end_block[1] + 1):
                                 temp_ship.append((start_block[0], block))
                         elif start_block[1] == end_block[1] and (end_block[0] - start_block[0]) < 4:
-                            for block in range(start_block[0], end_block[0] + 1):
+                            for block in range(start_block[0],
+                                               end_block[0] + 1):
                                 temp_ship.append((block, start_block[1]))
                     if temp_ship:
-                        for i in temp_ship:
-                            human_ships_to_draw_second.add(i)
                         temp_ship_set = set(temp_ship)
                         if (not (temp_ship_set.intersection(near_ship_set))):
                             if (5 - max_len) > num_ships_list[max_len - 1]:
+                                for i in temp_ship:
+                                    human_ships_to_draw_second.add(i)
                                 num_ships_list[max_len - 1] += 1
                                 human_ships_to_draw.append(temp_ship)
                                 human_ships_set |= temp_ship_set
-                                near_ship_set = self.near_safe(temp_ship, near_ship_set)
-                                field_count(start_block, end_block, field_ship_second, count)
+                                near_ship_set = self.near_safe(temp_ship,
+                                                               near_ship_set)
+                                field_count(start_block, end_block,
+                                            field_ship_second, count)
                                 length_of_remaining_ships[count] = max_len
                                 count += 1
                             else:
@@ -181,8 +195,6 @@ class DrawingShip:
             if (flag):
                 pygame.draw.rect(screen, WHITE, (start, ship_size), 3)
                 draw_ships(human_ships_to_draw)
-
-
             else:
                 pygame.display.update()
             flag = True
@@ -193,6 +205,7 @@ class DrawingShip:
 
         pygame.display.update()
 
+
 def field_count(start_block, end_block, field_ship, count):
     if start_block[0] == end_block[0]:
         for i in range(start_block[1], end_block[1] + 1):
@@ -200,6 +213,8 @@ def field_count(start_block, end_block, field_ship, count):
     else:
         for i in range(start_block[0], end_block[0] + 1):
             field_ship[i][start_block[1]] = count
+
+
 def draw_ships(ships_coordinates_list):
     for elem in ships_coordinates_list:
         ship = sorted(elem)
@@ -211,4 +226,5 @@ def draw_ships(ships_coordinates_list):
             ship_width, ship_height = ship_height, ship_width
         x = block_size * (x_start - 1) + left_margin
         y = block_size * (y_start - 1) + upper_margin
-        pygame.draw.rect(screen, RED, ((x, y), (ship_width, ship_height)), width=block_size // 8)
+        pygame.draw.rect(screen, RED, ((x, y),
+                         (ship_width, ship_height)), width=block_size // 8)
